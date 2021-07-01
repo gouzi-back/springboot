@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootjdbc.demo.dao.EmployeeMapper">
+
+    <resultMap id="EmployeeMap" type="com.bootjdbc.demo.pojo.Employee">
+        <id property="id" column="id"></id>
+        <result property="lastName" column="lastName"></result>
+        <result property="email" column="email"></result>
+        <result property="gender" column="gender"></result>
+        <result property="birth" column="birth"></result>
+      <association property="department" javaType="com.bootjdbc.demo.pojo.Department">
+          <id property="id" column="id"></id>
+          <result property="departmentName" column="departmentName"></result>
+      </association>
+    </resultMap>
+
+   <select id="listAll" resultMap="EmployeeMap">
+       select e.id,e.lastName,e.email,e.gender,d.departmentName,e.birth from employee e
+       inner join department d
+       on e.demtId=d.id
+   </select>
+
+
+    <select id="listAllById" resultType="com.bootjdbc.demo.pojo.Employee">
+        select * from employee where id=#{id}
+    </select>
+
+    <insert id="add" parameterType="com.bootjdbc.demo.pojo.Employee">
+        insert into employee (lastName,email,gender,demtId,birth)
+        values (#{lastName},#{email},#{gender},#{demtId},#{birth});
+    </insert>
+
+    <delete id="delete" parameterType="int">
+        delete from employee where id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.bootjdbc.demo.pojo.Employee">
+        update employee
+        <trim prefix="set" suffixOverrides="," suffix=" where id=#{id}">
+
+            <if test="lastName !=null">lastName=#{lastName},</if>
+            <if test="email !=null">email=#{email},</if>
+            <if test="gender !=null">gender=#{gender},</if>
+            <if test="demtId !=null">demtId=#{demtId},</if>
+            <if test="birth !=null">birth=#{birth},</if>
+
+        </trim>
+    </update>
+
+</mapper>
