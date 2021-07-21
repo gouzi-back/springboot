@@ -6,17 +6,21 @@ package com.bootjdbc.demo.controller;/**
  */
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.bootjdbc.demo.pojo.Department;
 import com.bootjdbc.demo.pojo.Employee;
+import com.bootjdbc.demo.pojo.PatientInfo;
 import com.bootjdbc.demo.service.impl.DepartmentServiceImpl;
 import com.bootjdbc.demo.service.impl.EmployeeServiceImpl;
+import com.bootjdbc.demo.util.HeSuanSoapUtil;
+import com.bootjdbc.demo.util.JsonXmlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -81,6 +85,43 @@ public class EmpController {
     public String Del(@PathVariable("id") Integer id){
         employeeService.delete(id);
         return "redirect:/emps";
+    }
+
+    @RequestMapping("/in")
+    @ResponseBody
+    public List<PatientInfo> info(){
+        String msg="hahah";
+        HeSuanSoapUtil heSuanSoapUtil=new HeSuanSoapUtil();
+        String strXml= heSuanSoapUtil.getHeSuan("8","00433876");
+        System.out.println(strXml);
+
+        JsonXmlUtils jsonXmlUtils=new JsonXmlUtils();
+        JSONObject a= jsonXmlUtils.xml2Json(strXml);
+        System.out.println(a+"+++++++++");
+        System.out.println("+++++++++++++++++++++++++++++");
+        JSONObject body=(JSONObject)a.get("Body");
+        System.out.println(body);
+        JSONObject RequestSubmitResponse=(JSONObject) body.get("RequestSubmitResponse") ;
+        System.out.println(RequestSubmitResponse);
+        String RequestSubmitResult= RequestSubmitResponse.getString("RequestSubmitResult");
+        System.out.println(RequestSubmitResult);
+
+        JSONObject RequestSubmitResults= jsonXmlUtils.xml2Json(RequestSubmitResult);
+        System.out.println(RequestSubmitResults);
+        String ResultDesc =RequestSubmitResults.getString("ResultDesc");
+        String ResultCode =RequestSubmitResults.getString("ResultCode");
+        System.out.println(ResultDesc+"==============="+ResultCode);
+        JSONObject ResultList=(JSONObject)RequestSubmitResults.get("ResultList");
+        System.out.println(ResultList);
+        JSONObject PatientInfo=(JSONObject)ResultList.get("PatientInfo");
+        System.out.println(PatientInfo);
+
+        String result= "["+ResultList.getString("PatientInfo")+"]";
+        System.out.println(result);
+//        PageData param = new PageData();
+        List<com.bootjdbc.demo.pojo.PatientInfo> employeeList = JSONObject.parseArray(result, PatientInfo.class);
+
+        return employeeList;
     }
 
 }

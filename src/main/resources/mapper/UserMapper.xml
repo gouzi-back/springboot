@@ -11,4 +11,8 @@
    where userName=#{username} and password=#{password}
  </select>
 
+  <insert id="addtest"  parameterType="com.bootjdbc.demo.pojo.Test">
+      insert into test VALUES(#{id},#{name});
+  </insert>
+
 </mapper>

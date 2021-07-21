@@ -48,6 +48,7 @@ spring:
         max-wait: -1
     password: 1234
 
+
 server:
   port: 8081
   servlet:
@@ -62,7 +63,6 @@ logging:
   config: classpath:log/logback-spring.xml
   file:
     path: G:/newLogs/nmys
-
 
 
 
