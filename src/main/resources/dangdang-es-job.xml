@@ -9,11 +9,11 @@
                         http://www.dangdang.com/schema/ddframe/reg/reg.xsd
                         http://www.dangdang.com/schema/ddframe/job
                         http://www.dangdang.com/schema/ddframe/job/job.xsd">
-    <!--注册中心 -->
-    <reg:zookeeper id="regCenter" server-lists="192.168.201.128:2181" namespace="dd-job"
-                   base-sleep-time-milliseconds="1000" max-sleep-time-milliseconds="3000" max-retries="3" />
+<!--    &lt;!&ndash;注册中心 &ndash;&gt;-->
+<!--    <reg:zookeeper id="regCenter" server-lists="192.168.201.128:2181" namespace="dd-job"-->
+<!--                   base-sleep-time-milliseconds="1000" max-sleep-time-milliseconds="3000" max-retries="3" />-->
 
-    <!--configure job -->
-    <job:simple id="testElasticJob" class="com.bootjdbc.demo.job.Timeask" registry-center-ref="regCenter"
-                cron="0/30 * * * * ?"   sharding-total-count="1" failover="true" />
+<!--    &lt;!&ndash;configure job &ndash;&gt;-->
+<!--    <job:simple id="testElasticJob" class="com.bootjdbc.demo.job.Timeask" registry-center-ref="regCenter"-->
+<!--                cron="0/30 * * * * ?"   sharding-total-count="1" failover="true" />-->
 </beans>
