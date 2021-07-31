@@ -1,7 +1,7 @@
 package com.bootjdbc.demo.service;
 
+import com.bootjdbc.demo.pojo.EmpExcel;
 import com.bootjdbc.demo.pojo.Employee;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -21,4 +21,6 @@ public interface EmployeeService {
 
     //update
     int update(Employee employee);
+
+    List<EmpExcel> empExcelInfo();
 }

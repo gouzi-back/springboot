@@ -83,7 +83,7 @@
 
 						<div class="form-group">
 							<label >birth</label>
-							<input th:value="${#dates.format(employeeById.getBirth(),'yyyy/MM/dd')}"  class="form-control" type="text" name="birth">
+							<input th:value="${#dates.format(employeeById.getBirth(),'yyyy-MM-dd')}"  class="form-control" type="date" name="birth">
 						</div>
 						<button type="submit" class="btn btn-primary" >修改</button>
 					</form>

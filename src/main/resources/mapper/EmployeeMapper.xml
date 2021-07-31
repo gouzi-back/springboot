@@ -50,4 +50,10 @@
         </trim>
     </update>
 
+    <select id="empExcelInfo" resultType="com.bootjdbc.demo.pojo.EmpExcel">
+        select e.id,e.lastName,e.email,e.gender,d.departmentName,e.birth from employee e
+       inner join department d
+       on e.demtId=d.id
+    </select>
+
 </mapper>

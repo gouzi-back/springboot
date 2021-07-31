@@ -1,6 +1,7 @@
 package com.bootjdbc.demo.service.impl;
 
 import com.bootjdbc.demo.dao.EmployeeMapper;
+import com.bootjdbc.demo.pojo.EmpExcel;
 import com.bootjdbc.demo.pojo.Employee;
 import com.bootjdbc.demo.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public int update(Employee employee) {
         return employeeMapper.update(employee);
+    }
+
+    @Override
+    public List<EmpExcel> empExcelInfo() {
+        return employeeMapper.empExcelInfo();
     }
 }

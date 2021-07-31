@@ -1,5 +1,6 @@
 package com.bootjdbc.demo.dao;
 
+import com.bootjdbc.demo.pojo.EmpExcel;
 import com.bootjdbc.demo.pojo.Employee;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -20,4 +21,7 @@ public interface EmployeeMapper {
 
     //update
     int update(Employee employee);
+
+    //Excel导出
+    List<EmpExcel> empExcelInfo();
 }

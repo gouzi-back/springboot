@@ -5,9 +5,13 @@ package com.bootjdbc.demo.pojo;/**
  * @Version: 1.0
  */
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
+import cn.afterturn.easypoi.excel.annotation.ExcelTarget;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 /**
  * 部门表
@@ -22,7 +26,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Department {
+@ExcelTarget("department")
+public class Department implements Serializable {
+
        private Integer id;
+       @Excel(name = "部门")
        private String departmentName;
 }

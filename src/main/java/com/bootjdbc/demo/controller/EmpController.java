@@ -6,21 +6,30 @@ package com.bootjdbc.demo.controller;/**
  */
 
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
+import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.bootjdbc.demo.pojo.Department;
+import com.bootjdbc.demo.pojo.EmpExcel;
 import com.bootjdbc.demo.pojo.Employee;
 import com.bootjdbc.demo.pojo.PatientInfo;
 import com.bootjdbc.demo.service.impl.DepartmentServiceImpl;
 import com.bootjdbc.demo.service.impl.EmployeeServiceImpl;
 import com.bootjdbc.demo.util.HeSuanSoapUtil;
 import com.bootjdbc.demo.util.JsonXmlUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -87,6 +96,31 @@ public class EmpController {
         return "redirect:/emps";
     }
 
+    @RequestMapping("/excel")
+    public void excelExport(HttpServletResponse response) throws IOException {
+        StringBuilder title =new StringBuilder();
+        title.append("员工信息");
+        response.setHeader("Content-Disposition","attachment;filename="+new String((title.toString()+".xls").getBytes(),"iso-8859-1"));
+        List<Employee> results = employeeService.listAll();
+        Workbook workbook= ExcelExportUtil.exportExcel(new ExportParams(title.toString(),"sheet1"),Employee.class,results);
+        OutputStream outputStream = response.getOutputStream();
+        workbook.write(outputStream);
+        outputStream.close();
+        workbook.close();
+    }
+
+    @PostMapping("/excelInput")
+    public Boolean uploas(@RequestParam("file")MultipartFile multipartFile) throws Exception{
+        ImportParams params=new ImportParams();
+        params.setHeadRows(2);
+        List<EmpExcel> list= ExcelImportUtil.importExcel(multipartFile.getInputStream(),EmpExcel.class,params);
+        System.out.println(JSONUtils.toJSONString(list));
+        return true;
+    }
+
+
+
+
     @RequestMapping("/in")
     @ResponseBody
     public List<PatientInfo> info(){
@@ -123,5 +157,5 @@ public class EmpController {
 
         return employeeList;
     }
-
+ 
 }
